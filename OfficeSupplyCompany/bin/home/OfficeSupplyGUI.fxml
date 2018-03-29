@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane fx:id="pane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="home.OfficeSupplyController">
+   <children>
+      <VBox fx:id="vbox" prefHeight="600.0" prefWidth="600.0" spacing="20.0">
+         <children>
+            <HBox fx:id="topHbox" spacing="20.0">
+               <children>
+                  <ChoiceBox fx:id="searchType" />
+                  <TextField fx:id="searchField" text="Keyword/SKU">
+                     <HBox.margin>
+                        <Insets />
+                     </HBox.margin>
+                  </TextField>
+                  <Button fx:id="search" mnemonicParsing="false" text="Search" />
+                  <Button fx:id="add" mnemonicParsing="false" text="Add" />
+               </children>
+               <VBox.margin>
+                  <Insets left="125.0" right="125.0" />
+               </VBox.margin>
+            </HBox>
+            <TableView fx:id="table" prefHeight="447.0" prefWidth="600.0">
+              <columns>
+                <TableColumn prefWidth="100.0" text="SKU" />
+                <TableColumn prefWidth="350.0" text="Name" />
+                  <TableColumn prefWidth="75.0" text="Location" />
+                  <TableColumn prefWidth="75.0" text="Price" />
+              </columns>
+            </TableView>
+            <HBox fx:id="bottomHbox" spacing="27.0">
+               <children>
+                  <Button fx:id="viewEdit" mnemonicParsing="false" text="View/Edit Item" />
+                  <Button fx:id="delete" mnemonicParsing="false" text="Delete Item">
+                     <HBox.margin>
+                        <Insets />
+                     </HBox.margin>
+                  </Button>
+                  <Button fx:id="changeQuantity" mnemonicParsing="false" text="Change Quantity" />
+               </children>
+               <VBox.margin>
+                  <Insets left="132.0" right="132.0" />
+               </VBox.margin>
+            </HBox>
+         </children>
+         <padding>
+            <Insets top="10.0" />
+         </padding>
+      </VBox>
+   </children>
+</AnchorPane>
