@@ -17,7 +17,7 @@ public class Main extends Application{
 	public void start(Stage primaryStage) throws Exception {
 		Parent root = FXMLLoader.load(getClass().getResource("OfficeSupplyGUI.fxml"));
         primaryStage.setTitle("Office Supply Company");
-        primaryStage.setScene(new Scene(root, 600, 600));
+        primaryStage.setScene(new Scene(root, 620, 550));
         primaryStage.show();
 	}
 }

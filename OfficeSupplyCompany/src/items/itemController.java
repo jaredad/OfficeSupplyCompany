@@ -1,5 +1,7 @@
 package items;
 
+import java.sql.SQLException;
+
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -10,9 +12,8 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
 public class itemController {
-
-    @FXML
-    private HBox middleHbox;
+	
+	String sku = "00000001";
 
     @FXML
     private TextField locationField;
@@ -30,10 +31,43 @@ public class itemController {
     private VBox topRightVbox;
 
     @FXML
+    private TextArea descriptionField;
+
+    @FXML
+    private TextField categoryField;
+
+    @FXML
+    private TextField priceField;
+
+    @FXML
+    private HBox UpperMiddleHbox;
+
+    @FXML
+    private VBox bottomVbox;
+
+    @FXML
+    private AnchorPane pane;
+
+    @FXML
+    private TextField quantityField;
+
+    @FXML
+    private HBox bottomHbox;
+
+    @FXML
+    private Label nameLabel;
+
+    @FXML
+    private HBox middleHbox;
+
+    @FXML
+    private VBox LeftUpperMiddleHbox;
+
+    @FXML
     private Label locationLabel;
 
     @FXML
-    private TextArea descriptionField;
+    private VBox upperMiddleVbox;
 
     @FXML
     private VBox mainVbox;
@@ -45,38 +79,39 @@ public class itemController {
     private Label topMiddleLabel;
 
     @FXML
+    private Label lowerTopMiddleLabel;
+
+    @FXML
     private VBox middleVbox;
-
-    @FXML
-    private TextField priceField;
-
-    @FXML
-    private VBox bottomVbox;
 
     @FXML
     private VBox topMiddleVbox;
 
     @FXML
-    private AnchorPane pane;
-
-    @FXML
     private VBox middleVbox2;
 
     @FXML
+    private Label lowerTopLeftLabel;
+
+    @FXML
     private Label descriptionLabel;
-
-    @FXML
-    private HBox bottomHbox;
-
-    @FXML
-    private Label nameLabel;
     
-    public void test() {
-    	System.out.println("hey");
+    public void addItem() throws ClassNotFoundException, SQLException {
+    	String name = nameField.getText();
+    	String price = priceField.getText();
+    	String location = locationField.getText();
+    	String category = categoryField.getText();
+    	String quantity = quantityField.getText();
+    	String sku_num = sku;
+    	String description = descriptionField.getText();
+    	increaseSKU();
+    	Item new_item = new Item(name, price, location, category, quantity, sku_num, description);
+    	Database new_data = new Database();
+    	new_data.addItem(new_item);
     }
     
-    public void addItem() {
-    	//access the function that handles adding a new item in a database class
+    public void increaseSKU() {
+    	return;
     }
 
 }
