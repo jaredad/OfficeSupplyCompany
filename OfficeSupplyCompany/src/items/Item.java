@@ -7,22 +7,17 @@ public class Item {
 	String location;
 	String category;
 	String quantity;
-	String sku;
 	String description;
 	
-	public Item(String n, String p, String l, String c, String q, String s, String d) {
+	public Item(String n, String p, String l, String c, String q, String d) {
 		name = n;
 		price = p;
 		location = l;
 		category = c;
 		quantity = q;
-		sku = s;
 		description = d;
 	}
 	
-	public void addToDatabase() {
-		
-	}
 	
 	public String getName() {
 		return "'" + name + "'";
@@ -44,9 +39,6 @@ public class Item {
 		return "'" + quantity + "'";
 	}
 	
-	public String getSKU() {
-		return "'" + sku + "'";
-	}
 	
 	public String getDescription() {
 		return "'" + description + "'";

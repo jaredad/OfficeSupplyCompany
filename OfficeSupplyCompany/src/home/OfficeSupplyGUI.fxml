@@ -19,7 +19,7 @@
                      </HBox.margin>
                   </TextField>
                   <Button fx:id="search" mnemonicParsing="false" text="Search" />
-                  <Button fx:id="add" mnemonicParsing="false" text="Add" />
+                  <Button fx:id="add" mnemonicParsing="false" onAction="#openItemWindow" text="Add Item" />
                </children>
                <VBox.margin>
                   <Insets left="125.0" right="125.0" />
@@ -27,10 +27,12 @@
             </HBox>
             <TableView fx:id="table" fixedCellSize="0.0" VBox.vgrow="ALWAYS">
               <columns>
-                <TableColumn minWidth="-1.0" prefWidth="100.0" text="SKU" />
-                <TableColumn maxWidth="-1.0" minWidth="75.0" prefWidth="-1.0" text="Name" />
-                  <TableColumn prefWidth="75.0" text="Location" />
-                  <TableColumn prefWidth="75.0" text="Price" />
+                <TableColumn minWidth="-1.0" prefWidth="107.0" resizable="false" text="SKU" />
+                <TableColumn maxWidth="216.0" minWidth="37.0" prefWidth="189.0" resizable="false" text="Name" />
+                  <TableColumn prefWidth="86.0" resizable="false" text="Location" />
+                  <TableColumn minWidth="0.0" prefWidth="62.0" resizable="false" text="Price" />
+                  <TableColumn prefWidth="91.0" resizable="false" text="Category" />
+                  <TableColumn prefWidth="54.0" text="Quantity" />
               </columns>
                <rotationAxis>
                   <Point3D />
@@ -49,8 +51,8 @@
                   </Button>
                   <HBox>
                      <children>
-                        <ToggleButton mnemonicParsing="false" text="add" />
-                        <ToggleButton mnemonicParsing="false" text="set" />
+                        <ToggleButton mnemonicParsing="false" text="Add" />
+                        <ToggleButton mnemonicParsing="false" text="Set" />
                         <TextField prefHeight="27.0" prefWidth="30.0" />
                      </children>
                   </HBox>
