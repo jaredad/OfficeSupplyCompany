@@ -1,5 +1,6 @@
 package items;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -9,7 +10,7 @@ import javafx.scene.control.Alert.AlertType;
 
 public class ErrorHandler {
 
-	public static boolean passErrorCheck(String name, String price, String location, String quantity, String description) {
+	public static boolean passErrorCheck(String name, String price, String location, String quantity, String description) throws ClassNotFoundException, SQLException {
 		if (!nameFieldCheck(name)) {
 			return false;
 		} else if (!priceFieldCheck(price)) {
@@ -24,9 +25,14 @@ public class ErrorHandler {
 		return true;
 	}
 
-	public static boolean nameFieldCheck(String name) {
+	public static boolean nameFieldCheck(String name) throws ClassNotFoundException, SQLException {
+		Database database = new Database();
 		if (name.equals(null)) {
 			String alertMessage = "Name field is blank!";
+			errorAlert(alertMessage);
+			return false;
+		} else if (database.getSuggestions("name").contains(name)) {
+			String alertMessage = "This item has already been added to the database!";
 			errorAlert(alertMessage);
 			return false;
 		}
@@ -123,6 +129,30 @@ public class ErrorHandler {
 		String alertMessage = "Description field is blank!";
 		errorAlert(alertMessage);
 		return false;
+	}
+	
+	public static boolean inDatabase(String x) throws ClassNotFoundException, SQLException {
+		Database database = new Database();
+		List<String> names = database.getSuggestions("name");
+		List<String> prices = database.getSuggestions("price");
+		List<String> locations = database.getSuggestions("location");
+		List<String> keywords = database.getSuggestions("keywords");
+		List<String> categories = database.getSuggestions("category");
+		List<String> skus = database.getSuggestions("sku");
+		if(names.contains(x)||prices.contains(x)||locations.contains(x)||keywords.contains(x)||categories.contains(x)||skus.contains(x)||x.equals("")) {
+			return true;
+		}
+		
+		errorAlert("This item is not in our database!");
+		return false;
+	}
+	
+	public static boolean isSearchable(String category) {
+		if (category == null) {
+			errorAlert("Select a category to search by.");
+			return false;
+		}
+		return true;
 	}
 
 	public static void errorAlert(String message) {

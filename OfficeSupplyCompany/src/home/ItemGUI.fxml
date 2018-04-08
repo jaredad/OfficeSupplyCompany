@@ -69,7 +69,7 @@
                            <children>
                               <HBox fx:id="UpperMiddleHbox" prefHeight="56.0" prefWidth="505.0">
                                  <children>
-                                    <VBox fx:id="LeftUpperMiddleHbox" prefHeight="56.0" prefWidth="147.0">
+                                    <VBox fx:id="LeftUpperMiddleVbox" prefHeight="56.0" prefWidth="147.0">
                                        <children>
                                           <Label fx:id="lowerTopLeftLabel" prefHeight="24.0" prefWidth="61.0" text="Category">
                                              <font>
@@ -79,7 +79,7 @@
                                           <ChoiceBox fx:id="categoryField" prefWidth="150.0" />
                                        </children>
                                     </VBox>
-                                    <VBox prefHeight="56.0" prefWidth="177.0">
+                                    <VBox fx:id="MiddleUpperMiddleVbox" prefHeight="56.0" prefWidth="177.0">
                                        <children>
                                           <Label fx:id="lowerTopMiddleLabel" prefHeight="24.0" prefWidth="58.0" text="Quantity">
                                              <font>
@@ -91,6 +91,23 @@
                                        <padding>
                                           <Insets left="27.0" />
                                        </padding>
+                                    </VBox>
+                                    <VBox fx:id="RightUpperMiddleVbox" prefHeight="56.0" prefWidth="147.0">
+                                       <children>
+                                          <Label fx:id="lowerTopRightLabel" prefHeight="23.0" prefWidth="101.0" text="Keywords">
+                                             <font>
+                                                <Font size="14.0" />
+                                             </font>
+                                          </Label>
+                                          <TextField fx:id="keywordsField" prefHeight="25.0" prefWidth="89.0">
+                                             <VBox.margin>
+                                                <Insets />
+                                             </VBox.margin>
+                                          </TextField>
+                                       </children>
+                                       <HBox.margin>
+                                          <Insets left="24.0" />
+                                       </HBox.margin>
                                     </VBox>
                                  </children>
                               </HBox>

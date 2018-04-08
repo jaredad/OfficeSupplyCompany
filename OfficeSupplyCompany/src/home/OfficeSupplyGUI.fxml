@@ -13,26 +13,26 @@
             <HBox fx:id="topHbox" spacing="20.0">
                <children>
                   <ChoiceBox fx:id="searchType" />
-                  <TextField fx:id="searchField" text="Keyword/SKU">
+                  <TextField fx:id="searchField" onAction="#changeSuggestionsList" promptText="Keyword/SKU">
                      <HBox.margin>
                         <Insets />
                      </HBox.margin>
                   </TextField>
-                  <Button fx:id="search" mnemonicParsing="false" text="Search" />
-                  <Button fx:id="add" mnemonicParsing="false" onAction="#openItemWindow" text="Add Item" />
+                  <Button fx:id="search" mnemonicParsing="false" onAction="#searchItem" text="Search" />
+                  <Button fx:id="resetButton" mnemonicParsing="false" onAction="#reset" text="Reset" />
                </children>
                <VBox.margin>
-                  <Insets left="125.0" right="125.0" />
+                  <Insets left="150.0" right="150.0" />
                </VBox.margin>
             </HBox>
             <TableView fx:id="table" fixedCellSize="0.0" VBox.vgrow="ALWAYS">
               <columns>
-                <TableColumn minWidth="-1.0" prefWidth="107.0" resizable="false" text="SKU" />
-                <TableColumn maxWidth="216.0" minWidth="37.0" prefWidth="189.0" resizable="false" text="Name" />
-                  <TableColumn prefWidth="86.0" resizable="false" text="Location" />
-                  <TableColumn minWidth="0.0" prefWidth="62.0" resizable="false" text="Price" />
-                  <TableColumn prefWidth="91.0" resizable="false" text="Category" />
-                  <TableColumn prefWidth="54.0" text="Quantity" />
+                <TableColumn fx:id="skuColumn" minWidth="-1.0" prefWidth="107.0" resizable="false" text="SKU" />
+                <TableColumn fx:id="nameColumn" maxWidth="216.0" minWidth="37.0" prefWidth="189.0" resizable="false" text="Name" />
+                  <TableColumn fx:id="locationColumn" prefWidth="86.0" resizable="false" text="Location" />
+                  <TableColumn fx:id="priceColumn" minWidth="0.0" prefWidth="62.0" resizable="false" text="Price" />
+                  <TableColumn fx:id="categoryColumn" prefWidth="91.0" resizable="false" text="Category" />
+                  <TableColumn fx:id="quantityColumn" prefWidth="54.0" text="Quantity" />
               </columns>
                <rotationAxis>
                   <Point3D />
@@ -43,19 +43,13 @@
             </TableView>
             <HBox fx:id="bottomHbox" spacing="27.0">
                <children>
-                  <Button fx:id="viewEdit" mnemonicParsing="false" text="View/Edit Item" />
-                  <Button fx:id="delete" mnemonicParsing="false" text="Delete Item">
+                  <Button fx:id="add" mnemonicParsing="false" onAction="#openItemWindow" text="Add Item" />
+                  <Button fx:id="viewEdit" mnemonicParsing="false" onAction="#editViewItemInfo" text="View/Edit Item" />
+                  <Button fx:id="delete" mnemonicParsing="false" onAction="#deleteItem" text="Delete Item">
                      <HBox.margin>
                         <Insets />
                      </HBox.margin>
                   </Button>
-                  <HBox>
-                     <children>
-                        <ToggleButton mnemonicParsing="false" text="Add" />
-                        <ToggleButton mnemonicParsing="false" text="Set" />
-                        <TextField prefHeight="27.0" prefWidth="30.0" />
-                     </children>
-                  </HBox>
                </children>
                <VBox.margin>
                   <Insets left="132.0" right="132.0" />
