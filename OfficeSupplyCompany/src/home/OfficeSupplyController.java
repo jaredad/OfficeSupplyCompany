@@ -172,7 +172,7 @@ public class OfficeSupplyController {
 
 	public void searchItem() throws ClassNotFoundException, SQLException {
 		if (ErrorHandler.isSearchable(searchType.getValue())
-				&& ErrorHandler.inDatabase(searchField.getText())) {
+				&& (ErrorHandler.inDatabase(searchField.getText())||searchType.getValue().equals("Keywords"))) {
 			for ( int i = 0; i<table.getItems().size(); i++) {
 			    table.getItems().clear();
 			}

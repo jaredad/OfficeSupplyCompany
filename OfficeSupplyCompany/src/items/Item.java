@@ -56,10 +56,6 @@ public class Item {
 		return sku;
 	}
 	
-	public void setSku(String s) {
-		sku = s;
-	}
-	
 	public boolean checkGreaterSku(String check) {
 		if (Integer.parseInt(sku)>Integer.parseInt(check)) {
 			return true;

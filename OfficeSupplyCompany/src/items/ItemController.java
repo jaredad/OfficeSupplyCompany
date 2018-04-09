@@ -123,6 +123,7 @@ public class ItemController {
 	boolean wait;
 
 	public void initialize() throws ClassNotFoundException, SQLException {
+		descriptionField.setWrapText(true);
 		ObservableList<String> categories = FXCollections.observableArrayList("Mail/Printing", "Office Furniture",
 				"Office Supplies", "Technology");
 		categoryField.setItems(categories);

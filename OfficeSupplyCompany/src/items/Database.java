@@ -121,7 +121,12 @@ public class Database {
 		openConnection();
 		String subcmd = "";
 		for (int i = 0; i < searchMap.size();i++) {
+			if (searchMap.keySet().toArray()[i] == "keywords") {
+				subcmd = subcmd + " " + searchMap.keySet().toArray()[i] + " like '%" + 
+			searchMap.get(searchMap.keySet().toArray()[i]).substring(1, searchMap.get(searchMap.keySet().toArray()[i]).length()-1)+"%' AND ";
+			} else {
 			subcmd = subcmd + " " + searchMap.keySet().toArray()[i] + " = " + searchMap.get(searchMap.keySet().toArray()[i])+" AND ";
+			}
 		}
 		subcmd = subcmd.substring(0, subcmd.length()-5);
 		System.out.println(subcmd);
