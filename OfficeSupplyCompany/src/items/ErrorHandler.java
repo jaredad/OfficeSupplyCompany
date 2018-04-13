@@ -10,8 +10,9 @@ import javafx.scene.control.Alert.AlertType;
 
 public class ErrorHandler {
 
-	public static boolean passErrorCheck(String name, String price, String location, String quantity, String description) throws ClassNotFoundException, SQLException {
-		if (!nameFieldCheck(name)) {
+	public static boolean passErrorCheck(String name, String price, String location, String quantity,
+			String description, String keywords, boolean isEdit) throws ClassNotFoundException, SQLException {
+		if (!nameFieldCheck(name, isEdit)) {
 			return false;
 		} else if (!priceFieldCheck(price)) {
 			return false;
@@ -21,17 +22,19 @@ public class ErrorHandler {
 			return false;
 		} else if (!descriptionFieldCheck(description)) {
 			return false;
+		} else if (!keywordsFieldCheck(keywords)) {
+			return false;
 		}
 		return true;
 	}
 
-	public static boolean nameFieldCheck(String name) throws ClassNotFoundException, SQLException {
+	public static boolean nameFieldCheck(String name, boolean isEdit) throws ClassNotFoundException, SQLException {
 		Database database = new Database();
 		if (name.equals(null)) {
 			String alertMessage = "Name field is blank!";
 			errorAlert(alertMessage);
 			return false;
-		} else if (database.getSuggestions("name").contains(name)) {
+		} else if (database.getSuggestions("name").contains(name) && !isEdit) {
 			String alertMessage = "This item has already been added to the database!";
 			errorAlert(alertMessage);
 			return false;
@@ -64,9 +67,9 @@ public class ErrorHandler {
 	}
 
 	public static boolean locationFieldCheck(String location) {
-		List<String> rows = new ArrayList<>(Arrays.asList("A", "B", "C", "D", "E", "F", "G"));
+		List<String> rows = new ArrayList<>(Arrays.asList("A", "B", "C", "D", "E", "F", "G", "H"));
 		if (location.length() > 3 || location.length() < 2) {
-			String alertMessage = "Improper format for location field. Please type aisle (1-32) then row (A-G). Examples: 1A, 5G, 14B.";
+			String alertMessage = "Improper format for location field. Please type aisle (1-32) then column (A-H). Examples: 1A, 5G, 14B.";
 			errorAlert(alertMessage);
 			return false;
 		} else if (location.length() == 2) {
@@ -75,27 +78,27 @@ public class ErrorHandler {
 				if (rows.contains(location.substring(1))) {
 					return true;
 				} else {
-					String alertMessage = "Please input a row between A and G.";
+					String alertMessage = "Please input a column between A and H.";
 					errorAlert(alertMessage);
 					return false;
 				}
 			} catch (NumberFormatException e) {
-				String alertMessage = "Improper format for location field. Please type aisle (1-32) then row (A-G). Examples: 3A, 12G, 8C.";
+				String alertMessage = "Improper format for location field. Please type aisle (1-32) then column (A-H). Examples: 3A, 12G, 8C.";
 				errorAlert(alertMessage);
 				return false;
 			}
 		} else if (location.length() == 3) {
 			try {
 				int aisle = Integer.parseInt(location.substring(0, 2));
-				if (rows.contains(location.substring(2)) && aisle<=32) {
+				if (rows.contains(location.substring(2)) && aisle <= 32) {
 					return true;
 				} else {
-					String alertMessage = "Improper format for location field. Please type aisle (1-32) then row (A-G). Examples: 3A, 12G, 8C.";
+					String alertMessage = "Improper format for location field. Please type aisle (1-32) then row (A-H). Examples: 3A, 12G, 8C.";
 					errorAlert(alertMessage);
 					return false;
 				}
 			} catch (NumberFormatException e) {
-				String alertMessage = "Improper format for location field. Please type aisle (1-32) then row (A-G). Examples: 3A, 12G, 8C.";
+				String alertMessage = "Improper format for location field. Please type aisle (1-32) then row (A-H). Examples: 3A, 12G, 8C.";
 				errorAlert(alertMessage);
 				return false;
 			}
@@ -114,7 +117,7 @@ public class ErrorHandler {
 			return false;
 		}
 	}
-	
+
 	public static boolean descriptionFieldCheck(String description) {
 		if (description.equals(null)) {
 			String alertMessage = "Description field is blank!";
@@ -130,7 +133,21 @@ public class ErrorHandler {
 		errorAlert(alertMessage);
 		return false;
 	}
-	
+
+	public static boolean keywordsFieldCheck(String keywords) {
+		if (keywords.startsWith(",") || keywords.endsWith(",")) {
+			String alertMessage = "Keywords cannot start or end with ','";
+			errorAlert(alertMessage);
+			return false;
+		} else if (keywords.contains(" ")) {
+			String alertMessage = "Keywords cannot contain spaces. Each keyword must be an individual word";
+			errorAlert(alertMessage);
+			return false;
+		}
+
+		return true;
+	}
+
 	public static boolean inDatabase(String x) throws ClassNotFoundException, SQLException {
 		Database database = new Database();
 		List<String> names = database.getSuggestions("name");
@@ -139,14 +156,33 @@ public class ErrorHandler {
 		List<String> keywords = database.getSuggestions("keywords");
 		List<String> categories = database.getSuggestions("category");
 		List<String> skus = database.getSuggestions("sku");
-		if(names.contains(x)||prices.contains(x)||locations.contains(x)||keywords.contains(x)||categories.contains(x)||skus.contains(x)||x.equals("")) {
+		if (containsElementLike(x, names) || containsElementLike(x, prices) || containsElementLike(x, locations) || containsKeyword(x, keywords)
+				|| containsElementLike(x, categories) || containsElementLike(x, skus) || x.equals("")) {
 			return true;
 		}
-		
+
 		errorAlert("This item is not in our database!");
 		return false;
 	}
-	
+
+	public static boolean containsKeyword(String search, List<String> keywords) {
+		for (int i = 0; i < keywords.size(); i++) {
+			if (keywords.get(i).toLowerCase().contains(search.toLowerCase())) {
+				return true;
+			}
+		}
+		return false;
+	}
+		
+	public static boolean containsElementLike(String search, List<String> dataList) {
+		for (int i = 0; i < dataList.size();i++) {
+			if (dataList.get(i).toLowerCase().equals(search.toLowerCase())) {
+				return true;
+			}
+		}
+		return false;
+	}
+
 	public static boolean isSearchable(String category) {
 		if (category == null) {
 			errorAlert("Select a category to search by.");

@@ -26,25 +26,14 @@ import javafx.stage.Stage;
 public class ItemController {
 
 	@FXML
-	private VBox MiddleUpperMiddleVbox;
+	private VBox MiddleUpperMiddleVbox, LeftUpperMiddleVbox, topleftVbox, topRightVbox, bottomVbox, LeftUpperMiddleHbox, upperMiddleVbox,
+	mainVbox, middleVbox, topMiddleVbox, middleVbox2;
 
 	@FXML
-	private VBox LeftUpperMiddleVbox;
+	private TextField locationField, nameField, priceField, quantityField;
 
 	@FXML
-	private TextField locationField;
-
-	@FXML
-	private HBox topVbox;
-
-	@FXML
-	private VBox topleftVbox;
-
-	@FXML
-	private TextField nameField;
-
-	@FXML
-	private VBox topRightVbox;
+	private HBox topVbox, UpperMiddleHbox, bottomHbox, middleHbox;
 
 	@FXML
 	private TextArea descriptionField;
@@ -53,96 +42,26 @@ public class ItemController {
 	private ChoiceBox<String> categoryField;
 
 	@FXML
-	private TextField priceField;
-
-	@FXML
-	private HBox UpperMiddleHbox;
-
-	@FXML
-	private VBox bottomVbox;
-
-	@FXML
 	private AnchorPane pane;
 
 	@FXML
-	private TextField quantityField;
-
-	@FXML
-	private HBox bottomHbox;
-
-	@FXML
-	private Label nameLabel;
-
-	@FXML
-	private HBox middleHbox;
-
-	@FXML
-	private VBox LeftUpperMiddleHbox;
-
-	@FXML
-	private Label locationLabel;
-
-	@FXML
-	private VBox upperMiddleVbox;
-
-	@FXML
-	private VBox mainVbox;
+	private Label nameLabel, locationLabel, topMiddleLabel, lowerTopMiddleLabel, lowerTopLeftLabel, descriptionLabel, lowerTopRightLabel;
 
 	@FXML
 	private Button button;
 
 	@FXML
-	private Label topMiddleLabel;
-
-	@FXML
-	private Label lowerTopMiddleLabel;
-
-	@FXML
-	private VBox middleVbox;
-
-	@FXML
-	private VBox topMiddleVbox;
-
-	@FXML
-	private VBox middleVbox2;
-
-	@FXML
-	private Label lowerTopLeftLabel;
-
-	@FXML
-	private Label descriptionLabel;
-
-	@FXML
-	private Label lowerTopRightLabel;
-
-	@FXML
 	private TextField keywordsField;
 
-	String updateSku;
-	Database data;
-	boolean wait;
+	private String updateSku;
+	
+	private Database data = new Database();
 
 	public void initialize() throws ClassNotFoundException, SQLException {
 		descriptionField.setWrapText(true);
-		ObservableList<String> categories = FXCollections.observableArrayList("Mail/Printing", "Office Furniture",
-				"Office Supplies", "Technology");
+		ObservableList<String> categories = FXCollections.observableArrayList("Mail/Printing", "Office Furniture","Office Supplies", "Technology");
 		categoryField.setItems(categories);
 		categoryField.getSelectionModel().selectFirst();
-		data = new Database();
-		button.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                try {
-					addItem();
-				} catch (ClassNotFoundException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (SQLException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-            }
-        });
 		setupGUI();
 	}
 
@@ -165,52 +84,78 @@ public class ItemController {
 			descriptionField.setEditable(false);
 			keywordsField.setText(itemList.get(7));
 			keywordsField.setEditable(false);
+			data.deleteAllItems("communicator");
 		}
 	}
 
-	public void addItem() throws ClassNotFoundException, SQLException {
+	public void editAddItemSetup() throws ClassNotFoundException, SQLException {
 		if (button.getText().equals("Edit")) {
-			nameField.setEditable(true);
-			priceField.setEditable(true);
-			locationField.setEditable(true);
-			categoryField.setDisable(false);
-			quantityField.setEditable(true);
-			descriptionField.setEditable(true);
-			keywordsField.setEditable(true);
+			setTextFieldsEditable();
 			button.setText("Finish");
 		} else if (button.getText().equals("Finish")) {
 			if (ErrorHandler.passErrorCheck(nameField.getText(), priceField.getText(), locationField.getText(),
-					quantityField.getText(), descriptionField.getText())) {
-				List<String> newInfo = new ArrayList<String>();
-				newInfo.add(nameField.getText());
-				newInfo.add(priceField.getText());
-				newInfo.add(locationField.getText());
-				newInfo.add(categoryField.getValue());
-				newInfo.add(quantityField.getText());
-				newInfo.add(updateSku);
-				newInfo.add(descriptionField.getText());
-				newInfo.add(keywordsField.getText());
-				data.update(updateSku, newInfo);
-				System.out.println(newInfo.get(5));
-				data.deleteAllItems("communicator");
-				infoAlert("Your edit was successful!");
+					quantityField.getText(), descriptionField.getText(),keywordsField.getText(), true)) {
+				updateInfo();
 				closeWindow();
 			}
 		} else {
 			if (ErrorHandler.passErrorCheck(nameField.getText(), priceField.getText(), locationField.getText(),
-					quantityField.getText(), descriptionField.getText())) {
-				Item new_item = new Item(nameField.getText(), priceField.getText(), locationField.getText(),
-						categoryField.getValue(), quantityField.getText(), data.createSKUSetup(),
-						descriptionField.getText(), keywordsField.getText());
-				data.addItem(new_item);
-				String addAlert = nameField.getText() + " has been added to the database.";
-				infoAlert(addAlert);
+					quantityField.getText(), descriptionField.getText(), keywordsField.getText(), false)) {
+				addItem();
 				closeWindow();
 			}
 		}
-		data.deleteAllItems("communicator");
 	}
-
+	
+	public void addItem() throws ClassNotFoundException, SQLException {
+		sanitizeInput();
+		Item new_item = new Item(nameField.getText(), priceField.getText(), locationField.getText(),
+				categoryField.getValue(), quantityField.getText(), data.createSKUSetup(),
+				descriptionField.getText(), keywordsField.getText().toLowerCase());
+		data.addItem(new_item);
+		String message = nameField.getText() + " has been added to the database.";
+		infoAlert(message);
+	}
+	
+	public void sanitizeInput() {
+		nameField.setText(nameField.getText().replaceAll("'", ""));
+		nameField.setText(nameField.getText().replaceAll(";", ""));
+		priceField.setText(priceField.getText().replaceAll("'", ""));
+		priceField.setText(priceField.getText().replaceAll(";", ""));
+		locationField.setText(locationField.getText().replaceAll("'", ""));
+		locationField.setText(locationField.getText().replaceAll(";", ""));
+		quantityField.setText(quantityField.getText().replaceAll("'", ""));
+		quantityField.setText(quantityField.getText().replaceAll(";", ""));
+		descriptionField.setText(descriptionField.getText().replaceAll("'", ""));
+		descriptionField.setText(descriptionField.getText().replaceAll(";", ""));
+		keywordsField.setText(keywordsField.getText().replaceAll("'", ""));
+		keywordsField.setText(keywordsField.getText().replaceAll(";", ""));
+	}
+	public void updateInfo() throws ClassNotFoundException, SQLException {
+		List<String> newInfo = new ArrayList<String>();
+		newInfo.add(nameField.getText());
+		newInfo.add(priceField.getText());
+		newInfo.add(locationField.getText());
+		newInfo.add(categoryField.getValue());
+		newInfo.add(quantityField.getText());
+		newInfo.add(updateSku);
+		newInfo.add(descriptionField.getText());
+		newInfo.add(keywordsField.getText().toLowerCase());
+		sanitizeInput();
+		data.update(newInfo);
+		infoAlert("Your edit was successful!");
+	}
+	
+	public void setTextFieldsEditable() {
+		nameField.setEditable(true);
+		priceField.setEditable(true);
+		locationField.setEditable(true);
+		categoryField.setDisable(false);
+		quantityField.setEditable(true);
+		descriptionField.setEditable(true);
+		keywordsField.setEditable(true);
+	}
+	
 	public void closeWindow() {
 		Stage stage1 = (Stage) button.getScene().getWindow();
 		stage1.close();

@@ -141,7 +141,7 @@
                   <Insets bottom="5.0" />
                </padding>
                <children>
-                  <Button fx:id="button" mnemonicParsing="false" onAction="#addItem" text="Add" />
+                  <Button fx:id="button" mnemonicParsing="false" onAction="#editAddItemSetup" text="Add" />
                </children>
             </HBox>
          </children>

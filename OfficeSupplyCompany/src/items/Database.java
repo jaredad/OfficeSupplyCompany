@@ -129,7 +129,6 @@ public class Database {
 			}
 		}
 		subcmd = subcmd.substring(0, subcmd.length()-5);
-		System.out.println(subcmd);
 		String cmd = "SELECT * FROM items WHERE " + subcmd + ";";
 		stat.execute(cmd);
 		ResultSet results = stat.getResultSet();
@@ -156,10 +155,11 @@ public class Database {
 			con.close();
 			return true;
 		}
+		con.close();
 		return false;
 	}
 
-	public void update(String updateSku, List<String> info) throws SQLException, ClassNotFoundException {
+	public void update(List<String> info) throws SQLException, ClassNotFoundException {
 		openConnection();
 		String cmd = "UPDATE items SET name = '" + info.get(0) + "', price = '" + info.get(1) + "', location = '"
 				+ info.get(2) + "', category = '" + info.get(3) + "', quantity = '" + info.get(4) + "', description = '"
